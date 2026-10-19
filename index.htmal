@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript Day 1</title>
+</head>
+<body>
+    <h1>JavaScript Day 1</h1>
+<script>
+    const productName = "Mug";
+    const price = 12;
+    let stock = 4;
+    const isAvailable = true;
+    console.log(productName);
+    console.log(price);
+    console.log(stock);
+    console.log(isAvailable);
+</script>
+</body>
+</html>

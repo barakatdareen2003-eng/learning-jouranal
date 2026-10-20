@@ -9,7 +9,6 @@ function stockAfterRestock(stock, quantity) {
         return stock + quantity;
     } else {
         return stock;
-
     }
 }
 function canReturn(netUnitsSold, quantity) {
@@ -29,11 +28,10 @@ let price =6;
 let stock=5;
 let netUnitsSold =0;
 let netSalesValue =0;
+
 // Sell 2 notebook.
 let saleQuantity = 2;
-
 console.log("Operation: sell", saleQuantity);
-
 if (canSell(stock, saleQuantity)) {
     stock = stock - saleQuantity;
     netUnitsSold = netUnitsSold + saleQuantity;
@@ -54,7 +52,6 @@ if (canReturn(netUnitsSold, returnQuantity)) {
     netUnitsSold -= returnQuantity;
     netSalesValue -= inventoryValue(price, returnQuantity);
 }
-
 console.log("Stock:", stock);
 console.log("Net units sold:", netUnitsSold);
 console.log("Net sales value:", netSalesValue);

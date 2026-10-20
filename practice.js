@@ -70,4 +70,4 @@ testInventory("Notebook", 6, 4);
 testInventory("Notebook", 6, 1);
 testInventory("Notebook", 6, 0);
 testInventory("Eraser", 2, 5); 
-  
+

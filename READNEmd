@@ -1,0 +1,24 @@
+Day 2 - JavaScript
+
+What I Learned
+
+1. Functions: I learned how to create and call functions to perform tasks without repeating code.
+2. Parameters and Arguments: I learned that parameters are variables in a function definition, while arguments are the actual values passed when calling the function.
+3. Return: I learned how to return a value from a function and use it in another part of the program.
+4. Console.log: I learned that console.log() displays information in the console, while return sends a value back to the code that called the function.
+5. Inventory Value: I learned how to calculate inventory value by multiplying the price by the quantity.
+6. Stock After Sale: I learned how to reduce stock by one when a product is available and prevent the stock from going below zero.
+7. Testing: I learned how to test my program with different stock values, including 4, 1, and 0, to check that it works correctly.
+8. Code Reuse: I learned how to use the same functions with different products, such as Notebook and Eraser.
+
+Notebook Test Results
+
+* Price per item: 6
+* Initial stock: 4
+* Initial inventory value: 24
+* Updated stock after sale: 3
+* New inventory value: 18
+
+Main Takeaway
+
+I learned that functions help me organize, reuse, test, and understand my code more easily.

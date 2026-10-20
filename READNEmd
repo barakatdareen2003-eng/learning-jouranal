@@ -17,7 +17,7 @@ Notebook Test Results
 * New inventory value: 18
 
 Main Takeaway
-I learned that functions help me organize, reuse, test, and understand my code more easily.
+I learned that functions help me organize,reuse,tests, and understand my code more easily.
 
 errors and fixes:
 in squre, the parameter name did not match tha variable used inside the funcation.

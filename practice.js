@@ -23,6 +23,10 @@ function stockAfterSale(currentStock) {
         return 0;
     }
 }
+console.log(stockAfterSale(4));//3
+console.log(stockAfterSale(1));//0
+console.log(stockAfterSale(0));//0
+
 
 let productName = "Notebook";
 let price = 6;

@@ -13,6 +13,8 @@ function canSell(stock, quantity) {
     return quantity > 0 && quantity <= stock;
 }
 
+
+
 function stockAfterRestock(stock, quantity) {
     if (quantity > 0) {
         return stock + quantity;
@@ -121,6 +123,7 @@ function runReconciliation(productName, openingStock, restockedUnits, currentSto
     console.log("Reconciliation " + productName + " -> Units (" + leftSide + " === " + rightSide + "): " + (leftSide === rightSide ? "MATCH" : "MISMATCH"));
     console.log("Reconciliation " + productName + " -> Sales (" + currentSalesValue + " === " + expectedSales + "): " + (currentSalesValue === expectedSales ? "MATCH" : "MISMATCH"));
 }
+
 showSummary("Notebook", price, stock, netSold, netSales);
 runReconciliation("Notebook", 5, 4, stock, netSold, netSales, price);
 showSummary("Eraser", ePrice, eStock, eSold, eSales);
@@ -130,6 +133,7 @@ let mPrice = 3;
 let mStock = 4;
 let mNetSold = 0;
 let mNetSales = 0;
+
 
 if (canSell(mStock, 3)) {
     mStock -= 3; mNetSold += 3; mNetSales += inventoryValue(mPrice, 3);

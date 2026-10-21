@@ -24,7 +24,6 @@ function canReturn(netUnitsSold, quantity) {
     return quantity > 0 && quantity <= netUnitsSold;
 }
 
-
 console.log("\n--- Block 2: Helper Checks ---");
 console.log("inventoryValue(6, 5) =", inventoryValue(6, 5)); // 30
 console.log("canSell(5, 2) =", canSell(5, 2));             // true
@@ -122,13 +121,10 @@ function runReconciliation(productName, openingStock, restockedUnits, currentSto
     console.log("Reconciliation " + productName + " -> Units (" + leftSide + " === " + rightSide + "): " + (leftSide === rightSide ? "MATCH" : "MISMATCH"));
     console.log("Reconciliation " + productName + " -> Sales (" + currentSalesValue + " === " + expectedSales + "): " + (currentSalesValue === expectedSales ? "MATCH" : "MISMATCH"));
 }
-
 showSummary("Notebook", price, stock, netSold, netSales);
 runReconciliation("Notebook", 5, 4, stock, netSold, netSales, price);
-
 showSummary("Eraser", ePrice, eStock, eSold, eSales);
 runReconciliation("Eraser", 3, 2, eStock, eSold, eSales, ePrice);
-
 console.log("\nBlock 3");
 let mPrice = 3;
 let mStock = 4;
@@ -138,7 +134,6 @@ let mNetSales = 0;
 if (canSell(mStock, 3)) {
     mStock -= 3; mNetSold += 3; mNetSales += inventoryValue(mPrice, 3);
 }
-
 mStock = stockAfterRestock(mStock, 2);
 
 if (canReturn(mNetSold, 1)) {

@@ -14,6 +14,8 @@ function stockAfterRestock(stock, quantity) {
 function canReturn(netUnitsSold, quantity) {
     return quantity > 0 && quantity <= netUnitsSold;
 }
+
+
 console.log("--- Function Tests ---");
 console.log("Inventory value:", inventoryValue(6, 5));
 console.log("Can sell 2 from stock 5:", canSell(5, 2));
@@ -44,7 +46,8 @@ show();
 if (canReturn(netUnitsSold, 6)) { stock += 6; netUnitsSold -= 6; netSalesValue -= inventoryValue(price, 6); }
 show(); 
 if (!canReturn(netUnitsSold, 1)) { console.log("Rejected:"); }
-show(); 
+show();
+
 console.log("\n--- Eraser Sequence ---");
 let ePrice = 2, eStock = 3, eSold = 0, eSalesVal = 0;
 function showEraser() { console.log(eStock + " / " + eSold + " / " + eSalesVal + " / " + inventoryValue(ePrice, eStock)); }

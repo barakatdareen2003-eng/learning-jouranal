@@ -12,7 +12,7 @@ How to Run
     Debug Notes  Day 3 Stock Desk
 Square Function Investigation
 - *Issue:* The original trial function used an undeclared variable (value * value) instead of the parameter (input * input), and included an unreachable console.log statement after the return.
-- *Resolution:* Corrected the parameter usage to input * input and moved test calls outside the function definition to ensure proper execution.
+  Resolution:Corrected the parameter usage to input * input and moved test calls outside the function definition to ensure proper execution.
 Key Learnings
-- All state-changing operations (sales, returns, restocks) must strictly occur inside accepted conditional branches to prevent unauthorized inventory leakage.
-- Return quantities cannot exceed net units sold, guarded safely by canReturn.
+  All state-changing operations (sales, returns, restocks) must strictly occur inside accepted conditional branches to prevent unauthorized inventory leakage.
+  Return quantities cannot exceed net units sold, guarded safely by canReturn.

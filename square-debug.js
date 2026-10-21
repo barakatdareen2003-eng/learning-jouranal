@@ -44,54 +44,37 @@ function printStep(step, op, status) {
     let invVal = inventoryValue(price, stock);
     console.log("Step " + step + " | " + op + " | " + status + " | Stock: " + stock + " | Sold: " + netSold + " | Sales: " + netSales + " | Inv: " + invVal);
 }
-
-// 1. Sell 2
 if (canSell(stock, 2)) {
     stock -= 2; netSold += 2; netSales += inventoryValue(price, 2);
     printStep(1, "Sell 2", "Accept");
 } else { printStep(1, "Sell 2", "Reject"); }
-
-// 2. Sell 4
 if (canSell(stock, 4)) {
     stock -= 4; netSold += 4; netSales += inventoryValue(price, 4);
     printStep(2, "Sell 4", "Accept");
 } else { printStep(2, "Sell 4", "Reject"); }
-
-// 3. Restock 4
 stock = stockAfterRestock(stock, 4);
 printStep(3, "Restock 4", "Accept");
-
-// 4. Sell 7
 if (canSell(stock, 7)) {
     stock -= 7; netSold += 7; netSales += inventoryValue(price, 7);
     printStep(4, "Sell 7", "Accept");
 } else { printStep(4, "Sell 7", "Reject"); }
-
-// 5. Sell 1
 if (canSell(stock, 1)) {
     stock -= 1; netSold += 1; netSales += inventoryValue(price, 1);
     printStep(5, "Sell 1", "Accept");
 } else { printStep(5, "Sell 1", "Reject"); }
-
-// 6. Return 3
 if (canReturn(netSold, 3)) {
     stock += 3; netSold -= 3; netSales -= inventoryValue(price, 3);
     printStep(6, "Return 3", "Accept");
 } else { printStep(6, "Return 3", "Reject"); }
-
-// 7. Return 7
 if (canReturn(netSold, 7)) {
     stock += 7; netSold -= 7; netSales -= inventoryValue(price, 7);
     printStep(7, "Return 7", "Accept");
 } else { printStep(7, "Return 7", "Reject"); }
-
-// 8. Return 6
 if (canReturn(netSold, 6)) {
     stock += 6; netSold -= 6; netSales -= inventoryValue(price, 6);
     printStep(8, "Return 6", "Accept");
 } else { printStep(8, "Return 6", "Reject"); }
 
-// 9. Return 1
 if (canReturn(netSold, 1)) {
     stock += 1; netSold -= 1; netSales -= inventoryValue(price, 1);
     printStep(9, "Return 1", "Accept");
@@ -153,20 +136,16 @@ let mStock = 4;
 let mNetSold = 0;
 let mNetSales = 0;
 
-// Sell 3
 if (canSell(mStock, 3)) {
     mStock -= 3; mNetSold += 3; mNetSales += inventoryValue(mPrice, 3);
 }
 
-// Restock 2
 mStock = stockAfterRestock(mStock, 2);
 
-// Return 1
 if (canReturn(mNetSold, 1)) {
     mStock += 1; mNetSold -= 1; mNetSales -= inventoryValue(mPrice, 1);
 }
 
-// Sell 4
 if (canSell(mStock, 4)) {
     mStock -= 4; mNetSold += 4; mNetSales += inventoryValue(mPrice, 4);
 }

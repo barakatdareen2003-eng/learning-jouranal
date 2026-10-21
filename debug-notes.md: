@@ -1,0 +1,9 @@
+
+# Debug Notes - Day 3 Stock Desk
+
+## Square Function Investigation
+- *Issue:* The original trial function used an undeclared variable (value * value) instead of the parameter (input * input), and included an unreachable console.log statement after the return.
+- *Resolution:* Corrected the parameter usage to input * input.
+
+## Key Learnings
+- All state-changing operations must strictly occur inside accepted conditional branches to prevent inventory leakage.

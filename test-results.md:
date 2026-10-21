@@ -1,1 +1,17 @@
+Test Results - Day 3 Stock Desk
 
+ 1. Helper Function Checks (Block 2)
+- inventoryValue(6, 5) -> Expected: 30 | Actual: 30 (MATCH)
+- canSell(5, 2) -> Expected: true | Actual: true (MATCH)
+- canSell(5, 10) -> Expected: false | Actual: false (MATCH)
+- stockAfterRestock(5, 4) -> Expected: 9 | Actual: 9 (MATCH)
+- canReturn(2, 1) -> Expected: true | Actual: true (MATCH)
+- canReturn(2, 5) -> Expected: false | Actual: false (MATCH)
+
+ 2. Shift & Rejection Tests (Blocks 3 & 4)
+- Notebook Shift: All 9 ordered operations executed successfully, respecting acceptance and rejection boundaries.
+- Rejection Tests: Quantities like 0 and -1 properly rejected; state remained unchanged.
+- Eraser Shift: Independent transfer sequence completed accurately.
+
+ 3. Closing Reports & Reconciliation (Blocks 5 & 6)
+- Notebook, Eraser, and Marker reconciliations executed and logged successfully.

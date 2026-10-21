@@ -9,7 +9,6 @@ console.log("square(0) ->", square(0));
 function inventoryValue(price, quantity) {
     return price * quantity;
 }
-
 function canSell(stock, quantity) {
     return quantity > 0 && quantity <= stock;
 }
@@ -92,7 +91,7 @@ console.log("Restock -1:", stockAfterRestock(testStock, -1));
 console.log("Return 0:", canReturn(testSold, 0) ? "Accepted" : "Rejected");
 console.log("Return -1:", canReturn(testSold, -1) ? "Accepted" : "Rejected");
 
-// Eraser Transfer
+
 let ePrice = 2;
 let eStock = 3;
 let eSold = 0;

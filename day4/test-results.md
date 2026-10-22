@@ -25,5 +25,5 @@ Day 4 Test Results Log
 - Outcome: All 6 rejected operations produced identical "Before" and "After" state strings, proving zero state mutation on failure.
 
 ## 4. Closing Reconciliation Results
-- *Notebook Reconciliation*: Units Match = true | Sales Match = true
+- *Netobook Reconciliation*: Units Match = true | Sales Match = true
 - *Eraser Reconciliation*: Units Match = true | Sales Match = true

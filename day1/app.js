@@ -1,7 +1,4 @@
 
-
-
-
 const productName = "Sticker";
 const price = 7;
 let stock = 3;

@@ -1,10 +1,10 @@
 # Day 4 Debug Notes & Explanations
 
-## Fault Investigation
+# Fault Investigation
 - *Read-Only Reporting*: Verified that showSummary() and reconciliation helpers perform purely read-only operations and do not modify global state variables.
 - *Syntax Fixes*: Avoided template literal expressions (${}) to guarantee smooth execution without environment-specific syntax issues.
 
-## Teach-back Explanations
+# Teach-back Explanations
 
 1. *Why do state changes belong strictly inside acceptance branches?*
    State changes must only occur when a transaction passes all guards. If variables are updated outside guarded condition checks, rejected operations will corrupt inventory counts and financial records.

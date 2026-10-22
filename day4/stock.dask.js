@@ -8,7 +8,6 @@ console.log("square(2) ->", square(2));
 console.log("square(0) ->", square(0));   
 console.log("square(-3) ->", square(-3)); 
 
-// 2. Helper Functions
 function inventoryValue(price, quantity) {
     return price * quantity;
 }

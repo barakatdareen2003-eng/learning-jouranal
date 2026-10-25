@@ -1,7 +1,7 @@
-
 function square(input) {
   return input * input;
 }
+
 console.log("=== Block 1: Square Tests ===");
 console.log("square(2) ->", square(2));   
 console.log("square(0) ->", square(0));   

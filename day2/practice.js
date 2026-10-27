@@ -5,13 +5,13 @@ function  greet (name , lastName){
 
 greet("Sara" , "Ahmed");
 //calculating a value 
-function square (namber){
+function square (number){
 
-    return number *number ;
+    return number *number ;}
 
-console.log(square(2));//4
+console.log(square(2)); 
 
-}
+
 
 function inventoryValue(price, quantity) {
     return price * quantity;

@@ -1,4 +1,4 @@
-# Stock Desk Inventory System Day 8 UI
+# Stock Desk Inventory System (Day 8 UI)
 
 ## Overview
 A web-based user interface for the Stock Desk inventory system built using pure HTML5, CSS3, and JavaScript (ES6+). It allows users to manage inventory operations (Sell, Restock, Return) dynamically with real-time table rendering and explicit validation.

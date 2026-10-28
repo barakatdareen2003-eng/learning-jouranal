@@ -117,7 +117,6 @@ returnBtn.addEventListener("click", function() {
     showMessage("Refused: Cannot return " + qty + " " + productName + "(s). Net sold is only " + product.netSold + ".", "error");
     return;
   }
-
   // Execute return
   product.stock += qty;
   product.netSold -= qty;

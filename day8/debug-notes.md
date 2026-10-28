@@ -7,7 +7,6 @@
 | TC-03 | Return | Notebook, Qty: 1 | Stock increases by 1, net sold decreases by 1 | Inventory adjusted correctly | Passed |
 | TC-04 | Validation | Eraser, Qty: -3 | Show error message for invalid quantity | Error message displayed, operation blocked | Passed |
 | TC-05 | Over-sale | Eraser, Qty: 10 | Refuse sale due to insufficient stock | Error refuting message displayed | Passed |
-لقد أرسلت
 # Debug Notes - Day 8 UI
 
 ## Issues Addressed

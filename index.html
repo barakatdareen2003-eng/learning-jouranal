@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Desk UI - Day 9</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Stock Desk UI</h1>
+        
+        <!-- Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Sold</th>
+                    <th>Sales</th>
+                    <th>Restocked</th>
+                    <th>Inventory</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="row-Notebook">
+                    <td>Notebook</td>
+                    <td class="col-price">6</td>
+                    <td class="col-stock">5</td>
+                    <td class="col-sold">0</td>
+                    <td class="col-sales">0</td>
+                    <td class="col-restocked">0</td>
+                    <td class="col-inventory">30</td>
+                </tr>
+                <tr id="row-Eraser">
+                    <td>Eraser</td>
+                    <td class="col-price">2</td>
+                    <td class="col-stock">3</td>
+                    <td class="col-sold">0</td>
+                    <td class="col-sales">0</td>
+                    <td class="col-restocked">0</td>
+                    <td class="col-inventory">6</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Controls Form -->
+        <div class="controls-section">
+            <label for="productSelect">Select Product:</label>
+            <select id="productSelect">
+                <option value="Notebook">Notebook</option>
+                <option value="Eraser">Eraser</option>
+            </select>
+
+            <label for="quantityInput">Quantity:</label>
+            <input type="number" id="quantityInput" placeholder="Enter quantity (1-1000)">
+
+            <div class="button-group">
+                <button id="sellBtn">Sell</button>
+                <button id="restockBtn">Restock</button>
+                <button id="returnBtn">Return</button>
+            </div>
+
+            <div id="messageBox" class="message-box"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

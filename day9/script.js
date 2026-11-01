@@ -1,147 +1,97 @@
-// State Management
-const products = {
-    Notebook: { price: 6, openingStock: 5, stock: 5, sold: 0, sales: 0, restocked: 0 },
-    Eraser: { price: 2, openingStock: 3, stock: 3, sold: 0, sales: 0, restocked: 0 }
-};
-
-function validateQuantity(qtyInput) {
-    if (qtyInput === undefined || qtyInput === null || String(qtyInput).trim() === "") {
-        return { valid: false, reason: "Quantity cannot be blank." };
-    }
-
-    const trimmed = String(qtyInput).trim();
-    const num = Number(trimmed);
-
-    if (!Number.isFinite(num) || !Number.isSafeInteger(num)) {
-        return { valid: false, reason: "Must be a valid whole number." };
-    }
-
-    if (num < 1 || num > 1000) {
-        return { valid: false, reason: "Quantity must be between 1 and 1000." };
-    }
-
-    return { valid: true, value: num };
-}
-function executeSell(productName, qty) {
-    const prod = products[productName];
-    if (!prod) return { accepted: false, reason: "Product not found." };
-
-    const validation = validateQuantity(qty);
-    if (!validation.valid) return { accepted: false, reason: validation.reason };
-
-    const amount = validation.value;
-    
-    if (amount > prod.stock) {
-        return { accepted: false, reason: "Insufficient stock for this sale." };
-    }
-
-    prod.stock -= amount;
-    prod.sold += amount;
-    prod.sales = prod.sold * prod.price;
-
-    return { accepted: true };
-}
-
-function executeRestock(productName, qty) {
-    const prod = products[productName];
-    if (!prod) return { accepted: false, reason: "Product not found." };
-
-    const validation = validateQuantity(qty);
-    if (!validation.valid) return { accepted: false, reason: validation.reason };
-
-    const amount = validation.value;
-    
-    if (prod.stock + amount > 10000) {
-        return { accepted: false, reason: "Stock exceeds maximum capacity of 10000." };
-    }
-
-    prod.stock += amount;
-    prod.restocked += amount;
-
-    return { accepted: true };
-}
-
-function executeReturn(productName, qty) {
-    const prod = products[productName];
-    if (!prod) return { accepted: false, reason: "Product not found." };
-
-    const validation = validateQuantity(qty);
-    if (!validation.valid) return { accepted: false, reason: validation.reason };
-
-    const amount = validation.value;
-    
-    if (amount > prod.sold) {
-        return { accepted: false, reason: "Cannot return more than sold units." };
-    }
-
-    prod.stock += amount;
-    prod.sold -= amount;
-    prod.sales = prod.sold * prod.price;
-
-    return { accepted: true };
-}
 document.addEventListener("DOMContentLoaded", () => {
     const productSelect = document.getElementById("productSelect");
     const quantityInput = document.getElementById("quantityInput");
     const messageBox = document.getElementById("messageBox");
 
-    function renderTable() {
-        const notebookRow = document.getElementById("row-Notebook");
-        if (notebookRow) {
-            notebookRow.querySelector(".col-price").textContent = products.Notebook.price;
-            notebookRow.querySelector(".col-stock").textContent = products.Notebook.stock;
-            notebookRow.querySelector(".col-sold").textContent = products.Notebook.sold;
-            notebookRow.querySelector(".col-sales").textContent = products.Notebook.sales;
-            notebookRow.querySelector(".col-restocked").textContent = products.Notebook.restocked;
-            notebookRow.querySelector(".col-inventory").textContent = products.Notebook.stock * products.Notebook.price;
-        }
+    let data = {
+        Notebook: { stock: 5, sold: 0, sales: 0, restocked: 0, inventory: 30 },
+        Eraser: { stock: 3, sold: 0, sales: 0, restocked: 0, inventory: 6 }
+    };
 
-        const eraserRow = document.getElementById("row-Eraser");
-        if (eraserRow) {
-            eraserRow.querySelector(".col-price").textContent = products.Eraser.price;
-            eraserRow.querySelector(".col-stock").textContent = products.Eraser.stock;
-            eraserRow.querySelector(".col-sold").textContent = products.Eraser.sold;
-            eraserRow.querySelector(".col-sales").textContent = products.Eraser.sales;
-            eraserRow.querySelector(".col-restocked").textContent = products.Eraser.restocked;
-            eraserRow.querySelector(".col-inventory").textContent = products.Eraser.stock * products.Eraser.price;
-        }
+    function updateUI() {
+       
+        document.getElementById("stock-Notebook").textContent = data.Notebook.stock;
+        document.getElementById("sold-Notebook").textContent = data.Notebook.sold;
+        document.getElementById("sales-Notebook").textContent = data.Notebook.sales;
+        document.getElementById("restocked-Notebook").textContent = data.Notebook.restocked;
+        document.getElementById("inventory-Notebook").textContent = data.Notebook.inventory;
+
+        document.getElementById("stock-Eraser").textContent = data.Eraser.stock;
+        document.getElementById("sold-Eraser").textContent = data.Eraser.sold;
+        document.getElementById("sales-Eraser").textContent = data.Eraser.sales;
+        document.getElementById("restocked-Eraser").textContent = data.Eraser.restocked;
+        document.getElementById("inventory-Eraser").textContent = data.Eraser.inventory;
     }
 
     function showMessage(text, isError = false) {
         messageBox.textContent = text;
         messageBox.className = "message-box " + (isError ? "error" : "success");
-        quantityInput.setAttribute("aria-invalid", isError ? "true" : "false");
+        messageBox.style.display = "block";
     }
 
+
     document.getElementById("sellBtn").addEventListener("click", () => {
-        const result = executeSell(productSelect.value, quantityInput.value);
-        if (result.accepted) {
-            showMessage("Sale processed successfully.", false);
-            renderTable();
-        } else {
-            showMessage(result.reason, true);
+        let qty = Number(quantityInput.value);
+        let prodName = productSelect.value;
+
+        if (isNaN(qty) || qty < 1 || qty > 1000) {
+            showMessage("Quantity must be between 1 and 1000.", true);
+            return;
         }
+
+        if (qty > data[prodName].stock) {
+            showMessage("Not enough stock available.", true);
+            return;
+        }
+
+        data[prodName].stock -= qty;
+        data[prodName].sold += qty;
+        data[prodName].sales += qty;
+        data[prodName].inventory = data[prodName].stock * (prodName === "Notebook" ? 6 : 2);
+
+        updateUI();
+        showMessage("Sale processed successfully.", false);
     });
 
     document.getElementById("restockBtn").addEventListener("click", () => {
-        const result = executeRestock(productSelect.value, quantityInput.value);
-        if (result.accepted) {
-            showMessage("Restock processed successfully.", false);
-            renderTable();
-        } else {
-            showMessage(result.reason, true);
+        let qty = Number(quantityInput.value);
+        let prodName = productSelect.value;
+
+        if (isNaN(qty) || qty < 1 || qty > 1000) {
+            showMessage("Quantity must be between 1 and 1000.", true);
+            return;
         }
+
+        data[prodName].stock += qty;
+        data[prodName].restocked += qty;
+        data[prodName].inventory = data[prodName].stock * (prodName === "Notebook" ? 6 : 2);
+
+        updateUI();
+        showMessage("Restock processed successfully.", false);
     });
 
     document.getElementById("returnBtn").addEventListener("click", () => {
-        const result = executeReturn(productSelect.value, quantityInput.value);
-        if (result.accepted) {
-            showMessage("Return processed successfully.", false);
-            renderTable();
-        } else {
-            showMessage(result.reason, true);
+        let qty = Number(quantityInput.value);
+        let prodName = productSelect.value;
+
+        if (isNaN(qty) || qty < 1 || qty > 1000) {
+            showMessage("Quantity must be between 1 and 1000.", true);
+            return;
         }
+
+        if (qty > data[prodName].sold) {
+            showMessage("Cannot return more than sold amount.", true);
+            return;
+        }
+
+        data[prodName].stock += qty;
+        data[prodName].sold -= qty;
+        data[prodName].sales -= qty;
+        data[prodName].inventory = data[prodName].stock * (prodName === "Notebook" ? 6 : 2);
+
+        updateUI();
+        showMessage("Return processed successfully.", false);
     });
 
-    renderTable();
+    updateUI();
 });

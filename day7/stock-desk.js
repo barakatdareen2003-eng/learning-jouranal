@@ -2,7 +2,6 @@ function square(number) {
     return number * number;
 }
 
-
 console.log("--- Square Test ---");
 console.log("square(2) ->", square(2));
 console.log("square(0) ->", square(0));
@@ -38,6 +37,7 @@ function printStep(step, op, status, currentStock, currentSold, currentSales, cu
     let invVal = inventoryValue(price, currentStock);
     console.log("Step " + step + " | " + op + " | " + status + " | Stock: " + currentStock + " | Sold: " + currentSold + " | Sales: " + currentSales + " | Restocked: " + currentRestocked + " | Inv: " + invVal);
 }
+
 if (canSell(stock, 2)) {
     stock -= 2;
     netSold += 2;
@@ -46,6 +46,7 @@ if (canSell(stock, 2)) {
 } else {
     printStep(1, "Sell 2", "Reject", stock, netSold, netSales, restocked);
 }
+
 if (canSell(stock, 4)) {
     stock -= 4;
     netSold += 4;
@@ -79,6 +80,7 @@ if (canSell(stock, 1)) {
 } else {
     printStep(5, "Sell 1", "Reject", stock, netSold, netSales, restocked);
 }
+
 if (canReturn(netSold, 3)) {
     stock += 3;
     netSold -= 3;
@@ -87,7 +89,6 @@ if (canReturn(netSold, 3)) {
 } else {
     printStep(6, "Return 3", "Reject", stock, netSold, netSales, restocked);
 }
-
 if (canReturn(netSold, 7)) {
     stock += 7;
     netSold -= 7;
@@ -108,4 +109,9 @@ if (canReturn(netSold, 6)) {
 
 if (canReturn(netSold, 1)) {
     stock += 1;
-    netSold -= 1;}
+    netSold -= 1;
+    netSales -= inventoryValue(price, 1);
+    printStep(9, "Return 1", "Accept", stock, netSold, netSales, restocked);
+} else {
+    printStep(9, "Return 1", "Reject", stock, netSold, netSales, restocked);
+}

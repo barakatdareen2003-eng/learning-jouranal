@@ -1,7 +1,6 @@
-// ==========================================
-// Day 11 - Automated Logic & Validation Tests
-// Isolated Helper & Guard Tests
-// ==========================================
+
+#Day 11 - Automated Logic & Validation Tests
+# Isolated Helper & Guard Tests
 
 console.log("=== Running Day 11 Automated Logic Tests ===");
 

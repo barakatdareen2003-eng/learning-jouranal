@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System - Day 11</title>
+    <style>
+        :root {
+            --primary-color: #00a8e8;
+            --primary-hover: #007ea7;
+            --bg-color: #f4f9fc;
+            --card-bg: #ffffff;
+            --text-color: #2b2d42;
+            --border-color: #e0e6ed;
+            --error-color: #d90429;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 30px 15px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 168, 232, 0.08);
+            border: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--primary-hover);
+            margin-top: 0;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        h3 {
+            margin-top: 0;
+            color: var(--text-color);
+            font-size: 1.1rem;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #fafcfe;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 11px;
+            margin-top: 6px;
+            box-sizing: border-box;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.15);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 18px;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .status-box {
+            background-color: #e0f2fe;
+            border-left: 4px solid var(--primary-color);
+            padding: 10px 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
+
+        .error-text {
+            color: var(--error-color);
+            font-size: 0.85rem;
+            margin-top: 6px;
+            display: block;
+            font-weight: 500;
+        }
+
+        .history-box {
+            background: var(--card-bg);
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            max-height: 180px;
+            overflow-y: auto;
+            margin-top: 10px;
+            font-size: 0.88rem;
+        }
+
+        .history-item {
+            border-bottom: 1px solid #f1f5f9;
+            padding: 8px 0;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Inventory Management System</h2>
+
+    <div class="section">
+        <label for="productSelect">Select Product:</label>
+        <select id="productSelect">
+            <option value="notebook">Notebook</option>
+            <option value="eraser">Eraser</option>
+        </select>
+
+        <div class="status-box">
+            <strong>Current State:</strong><br>
+            Stock: <span id="currentStock">5</span> | 
+            Net Sold: <span id="currentNetSold">0</span> | 
+            Returned: <span id="currentReturned">0</span>
+        </div>
+    </div>
+
+    <div class="section">
+        <h3>Execute Operation</h3>
+        
+        <label for="actionType">Operation Type:</label>
+        <select id="actionType">
+            <option value="sell">Sell</option>
+            <option value="restock">Restock</option>
+            <option value="return">Return</option>
+        </select>
+        <label for="quantityInput">Quantity (Integers 1 - 1000):</label>
+        <input type="number" id="quantityInput" aria-invalid="false" aria-describedby="errorMsg" min="1" max="1000" placeholder="e.g. 5">
+        <span id="errorMsg" class="error-text"></span>
+
+        <button id="executeBtn">Submit Action</button>
+    </div>
+    <div class="section">
+        <h3>Accepted Operation History</h3>
+        <div id="historyBox" class="history-box">No transactions recorded yet.</div>
+    </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

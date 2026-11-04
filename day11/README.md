@@ -20,3 +20,5 @@ This project presents an accessible, interactive browser-based interface for the
    - Purely state-driven without altering core stock calculations independently.
 
 ---
+## Demo Video
+[Watch Demo Video](demo.mp4/)

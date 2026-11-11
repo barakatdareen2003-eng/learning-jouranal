@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Stationery Shop - Day 17</title>
+    <style>
+        :root {
+            --green-deep: #064e3b;
+            --green-primary: #047857;
+            --green-light: #d1fae5;
+            --green-pale: #ecfdf5;
+            --border-green: #a7f3d0;
+            --white: #ffffff;
+            --error-color: #ef4444;
+            --success-color: #10b981;
+            --shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.12), 0 8px 10px -6px rgba(4, 120, 87, 0.08);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            color: var(--green-deep);
+            margin: 0;
+            padding: 20px;
+            direction: ltr;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* صفحة عريضة بالكامل تملأ أفق الشاشة */
+        .container {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            background: var(--white);
+            padding: 35px 50px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border-top: 6px solid var(--green-primary);
+            box-sizing: border-box;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid var(--green-pale);
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: var(--green-deep);
+            margin: 0 0 8px 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .welcome-msg {
+            color: var(--green-primary);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* لوحة تحكم الإحصائيات العريضة */
+        .dashboard-panel {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background-color: var(--green-pale);
+            border: 1px solid var(--border-green);
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--green-primary);
+            margin-bottom: 6px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--green-deep);
+        }
+
+        /* أزرار الفلترة */
+        .filter-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .filter-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid var(--border-green);
+            border-radius: 10px;
+            background-color: var(--white);
+            color: var(--green-primary);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background-color: var(--green-primary);
+            color: var(--white);
+            border-color: var(--green-primary);
+        }
+
+        .products-grid {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .product-card {
+            flex: 1;
+            border: 2px solid var(--border-green);
+            padding: 24px;
+            border-radius: 14px;
+            cursor: pointer;
+            background: var(--white);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .product-card:hover {
+            border-color: var(--green-primary);
+            transform: translateY(-2px);
+        }
+
+        .product-card[aria-pressed="true"] {
+            border-color: var(--green-primary);
+            background-color: var(--green-light);
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.15);
+        }
+
+        .product-card strong {
+            font-size: 20px;
+            color: var(--green-deep);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .stock-status-badge {
+            margin-top: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 8px;
+            display: inline-block;
+            background-color: var(--green-pale);
+            color: var(--green-primary);
+        }
+
+        .filter-notice {
+            background-color: var(--green-pale);
+            border: 1px dashed var(--green-primary);
+            padding: 14px;
+            border-radius: 10px;
+            text-align: center;
+            color: var(--green-deep);
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        .selected-product-indicator {
+            background-color: var(--green-light);
+            border: 1px solid var(--border-green);
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--green-deep);
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--green-deep);
+            font-size: 15px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid var(--border-green);
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background-color: var(--white);
+            color: var(--green-deep);
+            outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--green-primary);
+            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.1);
+        }
+
+        input[aria-invalid="true"] {
+            border-color: var(--error-color);
+            background-color: #fef2f2;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        button {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #submitBtn {
+            background-color: var(--green-primary);
+            color: var(--white);
+            box-shadow: 0 4px 10px rgba(4, 120, 87, 0.2);
+        }
+
+        #submitBtn:hover {
+            background-color: var(--green-deep);
+            transform: translateY(-1px);
+        }
+
+        .reset-btn {
+            background-color: var(--green-light);
+            color: var(--green-deep);
+            border: 2px solid var(--border-green);
+        }
+
+        .reset-btn:hover {
+            background-color: #a7f3d0;
+        }
+
+        .summary-box {
+            background-color: var(--green-pale);
+            border: 1px solid var(--border-green);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 25px;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .message-box {
+            margin-top: 15px;
+            padding: 14px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .message-box.error {
+            background-color: #fef2f2;
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+            display: block;
+        }
+
+        .message-box.success {
+            background-color: #f0fdf4;
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+            display: block;
+        }
+
+        .history-box {
+            margin-top: 25px;
+            background: var(--green-pale);
+            border: 1px solid var(--border-green);
+            padding: 20px;
+            border-radius: 12px;
+            max-height: 220px;
+            overflow-y: auto;
+        }
+
+        .history-box strong {
+            color: var(--green-deep);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 15px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        .storage-status {
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--green-primary);
+            text-align: right;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h2>Aurora Stationery Shop</h2>
+        <div class="welcome-msg">Day 17: Low-Stock Dashboard & Filter Desk</div>
+    </header>
+
+    <!-- لوحة تحكم الإحصائيات العامة للمتجر -->
+    <div class="dashboard-panel" id="dashboardPanel">
+        <div class="stat-card">
+            <span class="stat-label">Total Products</span>
+            <span class="stat-value" id="statTotalProducts">2</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Total Units in Stock</span>
+            <span class="stat-value" id="statTotalUnits">8</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-label">Low-Stock Count</span>
+            <span class="stat-value" id="statLowStockCount">0</span>
+        </div>
+    </div>
+
+    <!-- أزرار الفلترة (All / Low Stock) -->
+    <div class="filter-group">
+        <button type="button" class="filter-btn active" id="filterAllBtn" onclick="setFilter('all')">All Products</button>
+        <button type="button" class="filter-btn" id="filterLowBtn" onclick="setFilter('low')">Low Stock (≤ 2)</button>
+    </div>
+
+    <!-- شبكة بطاقات المنتجات -->
+    <div class="products-grid" id="productsGrid">
+        <div class="product-card" id="card-notebook" onclick="selectProduct('notebook')">
+            <strong>Notebook</strong>
+            <div id="card-notebook-info">Stock: 5 | Factor: 6</div>
+            <div class="stock-status-badge" id="badge-notebook">In stock</div>
+        </div>
+        <div class="product-card" id="card-eraser" onclick="selectProduct('eraser')">
+            <strong>Eraser</strong>
+            <div id="card-eraser-info">Stock: 3 | Factor: 2</div>
+            <div class="stock-status-badge" id="badge-eraser">In stock</div>
+        </div>
+    </div>
+
+    <!-- رسالة تنبيهية عند خلو قائمة الفلتر -->
+    <div class="filter-notice" id="filterNotice" style="display: none;"></div>
+
+    <div id="messageBox" class="message-box"></div>
+
+    <!-- مؤشر المنتج المختار حتى لو كان مخفياً بالفلتر -->
+    <div class="selected-product-indicator" id="selectedProductIndicator">
+        Selected product: Notebook
+    </div>
+
+    <div class="form-group">
+        <label for="operationSelect">Operation Type:</label>
+        <select id="operationSelect">
+            <option value="sell">Sell</option>
+            <option value="restock">Restock</option>
+            <option value="return">Return</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="quantityInput">Quantity Units (1 - 1000):</label>
+        <input type="number" id="quantityInput" min="1" max="1000" aria-invalid="false" placeholder="Enter quantity units">
+    </div>
+
+    <div class="btn-group">
+        <button type="button" id="submitBtn">Submit Action</button>
+        <button type="button" class="reset-btn" id="resetBtn">Reset this shop</button>
+    </div>
+
+    <div class="summary-box" id="summaryBox">
+        <strong>Shop Summary Report:</strong> Loading state...
+    </div>
+
+    <div class="history-box">
+        <strong>Accepted Operation History:</strong>
+        <ul id="historyList"></ul>
+    </div>
+
+    <div class="storage-status" id="storageStatus">Storage: Synchronized with localStorage</div>
+</div>
+
+<script>
+    const STORAGE_KEY = "dareen-shop-day17-v1";
+    const LOW_STOCK_THRESHOLD = 2;
+
+    let currentFilter = "all";
+
+    function getFreshState() {
+        return {
+            version: 1,
+            selected: "notebook",
+            products: {
+                notebook: { name: "Notebook", factor: 6, openingStock: 5, stock: 5, netSold: 0, restockedCount: 0, returnedCount: 0, totalOutput: 0, inventoryTotal: 30 },
+                eraser: { name: "Eraser", factor: 2, openingStock: 3, stock: 3, netSold: 0, restockedCount: 0, returnedCount: 0, totalOutput: 0, inventoryTotal: 6 }
+            },
+            history: []
+        };
+    }
+
+    let shopState = getFreshState();
+    let isRecoveryNeeded = false;
+
+    function validateState(candidate) {
+        if (!candidate || typeof candidate !== "object") return false;
+        if (!candidate.products || typeof candidate.products !== "object") return false;
+        if (!Array.isArray(candidate.history)) return false;
+
+        for (const entry of candidate.history) {
+            if (!entry || typeof entry !== "object" || Array.isArray(entry)) return false;
+            if (!entry.product || !entry.action || typeof entry.qty !== "number" || typeof entry.newStock !== "number") return false;
+        }
+
+        const reqKeys = ["notebook", "eraser"];
+        for (const key of reqKeys) {
+            const p = candidate.products[key];
+            if (!p || typeof p !== "object") return false;
+            if (typeof p.stock !== "number" || p.stock < 0 || p.stock > 10000) return false;
+            if (typeof p.netSold !== "number" || p.netSold < 0) return false;
+            if (typeof p.factor !== "number" || p.factor <= 0) return false;
+        }
+        return true;
+    }
+
+    function loadFromStorage() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved !== null) {
+                const parsed = JSON.parse(saved);
+                if (validateState(parsed)) {
+                    shopState = parsed;
+                    isRecoveryNeeded = false;
+                    document.getElementById("storageStatus").textContent = "Storage: Validated & Loaded successfully";
+                } else {
+                    isRecoveryNeeded = true;
+                    shopState = getFreshState();
+                    document.getElementById("storageStatus").textContent = "Storage: Saved data could not be used; recovery required";
+                }
+            } else {
+                shopState = getFreshState();
+                isRecoveryNeeded = false;
+                document.getElementById("storageStatus").textContent = "Storage: Fresh state ready";
+            }
+        } catch (e) {
+            isRecoveryNeeded = true;
+            shopState = getFreshState();
+            document.getElementById("storageStatus").textContent = "Storage: Recovered from unreadable JSON";
+        }
+    }
+
+    function saveToStorage() {
+        if (isRecoveryNeeded) {
+            document.getElementById("storageStatus").textContent = "Storage: Not saved; recovery required";
+            return;
+        }
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(shopState));
+            document.getElementById("storageStatus").textContent = "Storage: Synchronized with localStorage";
+        } catch (e) {
+            document.getElementById("storageStatus").textContent = "Storage: Not saved due to write error";
+        }
+    }
+
+    function resetShop() {
+        if (confirm("Are you sure you want to reset this shop to fresh state?")) {
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+                isRecoveryNeeded = false;
+                shopState = getFreshState();
+                currentFilter = "all";
+                render();
+                showMessage("Shop has been reset to fresh state.", "success");
+                document.getElementById("storageStatus").textContent = "Storage: Reset successful";
+            } catch (e) {
+                showMessage("Error: Failed to reset shop key.", "error");
+            }
+        }
+    }
+
+    function parseValidQuantity(rawVal) {
+        if (rawVal === "" || rawVal === null) return null;
+        const num = Number(rawVal);
+        if (!Number.isInteger(num) || num < 1 || num > 1000) return null;
+        return num;
+    }
+
+    function selectProduct(productKey) {
+        if (shopState.products[productKey]) {
+            shopState.selected = productKey;
+            render();
+        }
+    }
+
+    function setFilter(filterType) {
+        currentFilter = filterType;
+        render();
+    }
+
+    function executeOperation() {
+        if (isRecoveryNeeded) {
+            showMessage("Error: Saved data could not be used; recovery required. Please reset first.", "error");
+            return;
+        }
+
+        const operationType = document.getElementById("operationSelect").value;
+        const qtyInput = document.getElementById("quantityInput");
+        const qty = parseValidQuantity(qtyInput.value);
+
+        if (qty === null) {
+            qtyInput.setAttribute("aria-invalid", "true");
+            showMessage("Error: Please enter a valid integer between 1 and 1000.", "error");
+            return;
+        }
+
+        qtyInput.setAttribute("aria-invalid", "false");
+        const p = shopState.products[shopState.selected];
+        let success = false;
+        let refusalReason = "";
+
+        if (operationType === 'sell') {
+            if (p.stock >= qty) {
+                p.stock -= qty;
+                p.netSold += qty;
+                p.totalOutput = p.netSold * p.factor;
+                p.inventoryTotal = p.stock * p.factor;
+                success = true;
+            } else {
+                refusalReason = "Refused: Insufficient stock!";
+            }
+        } else if (operationType === 'restock') {
+            if (p.stock + qty <= 10000) {
+                p.stock += qty;
+                p.restockedCount += qty;
+                p.inventoryTotal = p.stock * p.factor;
+                success = true;
+            } else {
+                refusalReason = "Refused: Exceeds 10,000 maximum stock capacity!";
+            }
+        } else if (operationType === 'return') {
+            if (qty > p.netSold) {
+                refusalReason = "Refused: Cannot return more than net sold units!";
+            } else if (p.stock + qty > 10000) {
+                refusalReason = "Refused: Return would push stock above 10,000 maximum capacity!";
+            } else {
+                p.stock += qty;
+                p.netSold -= qty;
+                p.returnedCount = (p.returnedCount || 0) + qty;
+                p.totalOutput = p.netSold * p.factor;
+                p.inventoryTotal = p.stock * p.factor;
+                success = true;
+            }
+        }
+
+        if (success) {
+            shopState.history.unshift({
+                product: p.name,
+                action: operationType.toUpperCase(),
+                qty: qty,
+                newStock: p.stock
+            });
+            saveToStorage();
+            render();
+            qtyInput.value = "";
+            showMessage("Success: " + operationType.toUpperCase() + " " + qty + " for " + p.name + ".", "success");
+        } else {
+            showMessage(refusalReason, "error");
+        }
+    }
+
+    function showMessage(text, type) {
+        const box = document.getElementById("messageBox");
+        box.textContent = text;
+        box.className = "message-box " + type;
+    }
+
+    function getStockStatusText(stock) {
+        if (stock === 0) return "Out of stock";
+        if (stock <= LOW_STOCK_THRESHOLD) return "Low stock";
+        return "In stock";
+    }
+
+    function render() {
+        const nb = shopState.products.notebook;
+        const er = shopState.products.eraser;
+
+        const totalProducts = 2;
+        const totalUnits = nb.stock + er.stock;
+        let lowStockCount = 0;
+        if (nb.stock <= LOW_STOCK_THRESHOLD) lowStockCount++;
+        if (er.stock <= LOW_STOCK_THRESHOLD) lowStockCount++;
+
+        document.getElementById("statTotalProducts").textContent = totalProducts;
+        document.getElementById("statTotalUnits").textContent = totalUnits;
+        document.getElementById("statLowStockCount").textContent = lowStockCount;
+
+        document.getElementById("card-notebook-info").textContent = "Stock: " + nb.stock + " | Factor: " + nb.factor;
+        document.getElementById("badge-notebook").textContent = getStockStatusText(nb.stock);
+
+        document.getElementById("card-eraser-info").textContent = "Stock: " + er.stock + " | Factor: " + er.factor;
+        document.getElementById("badge-eraser").textContent = getStockStatusText(er.stock);
+
+        const nbCard = document.getElementById("card-notebook");
+        const erCard = document.getElementById("card-eraser");
+        const filterNotice = document.getElementById("filterNotice");
+
+        const nbIsLow = nb.stock <= LOW_STOCK_THRESHOLD;
+        const erIsLow = er.stock <= LOW_STOCK_THRESHOLD;
+
+        if (currentFilter === "low") {
+            document.getElementById("filterAllBtn").classList.remove("active");
+            document.getElementById("filterLowBtn").classList.add("active");
+
+            nbCard.style.display = nbIsLow ? "block" : "none";
+            erCard.style.display = erIsLow ? "block" : "none";
+
+            if (lowStockCount === 0) {
+                filterNotice.style.display = "block";
+                filterNotice.textContent = "No products are low on stock";
+            } else {
+                filterNotice.style.display = "none";
+            }
+        } else {
+            document.getElementById("filterAllBtn").classList.add("active");
+            document.getElementById("filterLowBtn").classList.remove("active");
+
+            nbCard.style.display = "block";
+            erCard.style.display = "block";
+            filterNotice.style.display = "none";
+        }
+
+        const isNotebook = shopState.selected === 'notebook';
+        nbCard.setAttribute("aria-pressed", isNotebook ? "true" : "false");
+        erCard.setAttribute("aria-pressed", !isNotebook ? "true" : "false");
+
+        const selectedProdObj = shopState.products[shopState.selected];
+        const isSelectedHidden = (currentFilter === "low" && selectedProdObj.stock > LOW_STOCK_THRESHOLD);
+        
+        const indicator = document.getElementById("selectedProductIndicator");
+        if (isSelectedHidden) {
+            indicator.textContent = "Selected product: " + selectedProdObj.name + " (Hidden by this filter, but operations still apply)";
+        } else {
+            indicator.textContent = "Selected product: " + selectedProdObj.name;
+        }
+
+        const summaryBox = document.getElementById("summaryBox");
+        summaryBox.innerHTML = 
+            "<strong>Shop Summary Report:</strong><br>" +
+            "- <strong>Notebook:</strong> Stock: " + nb.stock + " | Net Sold: " + nb.netSold + " | Total Output: " + nb.totalOutput + " | Inventory Total: " + nb.inventoryTotal + "<br>" +
+            "- <strong>Eraser:</strong> Stock: " + er.stock + " | Net Sold: " + er.netSold + " | Total Output: " + er.totalOutput + " | Inventory Total: " + er.inventoryTotal;
+
+        const historyList = document.getElementById("historyList");
+        historyList.innerHTML = "";
+        shopState.history.forEach(item => {
+            const li = document.createElement("li");
+            li.textContent = "[" + item.product + "] Action: " + item.action + " | Qty: " + item.qty + " | New Stock: " + item.newStock;
+            historyList.appendChild(li);
+        });
+    }
+
+    document.getElementById("submitBtn").addEventListener("click", executeOperation);
+    document.getElementById("resetBtn").addEventListener("click", resetShop);
+
+    window.onload = function() {
+        loadFromStorage();
+        render();
+    };
+</script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "selected": "notebook",
+  "products": {
+    "notebook": {
+      "name": "Notebook",
+      "factor": 6,
+      "openingStock": 5,
+      "stock": 5,
+      "netSold": 0,
+      "restockedCount": 0,
+      "returnedCount": 0,
+      "totalOutput": 0,
+      "inventoryTotal": 30
+    },
+    "eraser": {
+      "name": "Eraser",
+      "factor": 2,
+      "openingStock": 3,
+      "stock": 3,
+      "netSold": 0,
+      "restockedCount": 0,
+      "returnedCount": 0,
+      "totalOutput": 0,
+      "inventoryTotal": 6
+    }
+  },
+  "history": [
+    null
+  ]
+}

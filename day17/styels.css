@@ -1,10 +1,9 @@
 :root {
-    --green-deep: #064e3b;       /* أخضر غامق فخم للعناوين والإطار العلوي */
-    --green-primary: #047857;    /* أخضر رئيسي للأزرار والعناصر النشطة */
-    --green-light: #d1fae5;      /* أخضر فاتح للخلفيات والبطاقات المحددة */
-    --green-pale: #ecfdf5;       /* أخضر باهت جداً لخلفيات الصناديق */
-    --border-green: #a7f3d0;     /* حدود خضراء ناعمة */
-    --white: #ffffff;
+    --green-deep: #064e3b;       
+    --green-primary: #047857;   
+    --green-light: #d1fae5;    
+    --green-pale: #ecfdf5;      
+    --border-green: #a7f3d0;     
     --error-color: #ef4444;
     --success-color: #10b981;
     --shadow: 0 10px 25px -5px rgba(4, 120, 87, 0.12), 0 8px 10px -6px rgba(4, 120, 87, 0.08);

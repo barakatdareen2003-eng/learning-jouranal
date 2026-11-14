@@ -1,0 +1,22 @@
+{
+  "storage_key": "dareen-shop-day18-v1",
+  "products": [
+    {
+      "id": 1,
+      "name": "Notebook",
+      "stock": 5,
+      "lowThreshold": 2,
+      "hidden": false
+    },
+    {
+      "id": 2,
+      "name": "Eraser",
+      "stock": 3,
+      "lowThreshold": 1,
+      "hidden": false
+    }
+  ],
+  "selected": null,
+  "history": [],
+  "currentFilter": "all"
+}

@@ -1,0 +1,633 @@
+
+     <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aurora Stationery Shop - Day 18</title>
+    <style>
+        :root {
+            --bg-dark: #121019;          
+            --card-bg: #1e1b2e;          
+            --primary-purple: #8b5cf6;   
+            --accent-pink: #ec4899;      
+            --accent-rose: #f43f5e;      
+            --border-color: #2e283c;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --white: #ffffff;
+            --error-color: #f87171;
+            --success-color: #34d399;
+            --shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1528 100%);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            direction: ltr;
+            min-height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1450px;
+            background: var(--card-bg);
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border-top: 6px solid var(--accent-pink);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        h2 {
+            color: var(--white);
+            margin: 0 0 5px 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .welcome-msg {
+            color: var(--accent-pink);
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .left-column, .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background-color: #262235;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--white);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        .filter-btn {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background-color: #262235;
+            color: var(--text-main);
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+            color: var(--white);
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .products-grid {
+            display: flex;
+            gap: 15px;
+        }
+
+        .product-card {
+            flex: 1;
+            border: 1px solid var(--border-color);
+            padding: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            background: #262235;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .product-card[aria-pressed="true"] {
+            border-color: var(--accent-pink);
+            background-color: #2f2a40;
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.2);
+        }
+
+        .product-card strong {
+            font-size: 18px;
+            color: var(--white);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .product-card div {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .stock-status-badge {
+            margin-top: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            background-color: #1e1b2e;
+            color: var(--accent-pink);
+            border: 1px solid var(--border-color);
+        }
+
+        .filter-notice {
+            background-color: rgba(248, 113, 113, 0.1);
+            border: 1px dashed rgba(248, 113, 113, 0.3);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            color: var(--error-color);
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .selected-indicator {
+            background-color: #262235;
+            border: 1px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary-purple);
+        }
+
+        .controls-box {
+            background: #262235;
+            padding: 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 15px;
+            background-color: #1e1b2e;
+            color: var(--white);
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: var(--accent-pink);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        button.action-btn {
+            flex: 1;
+            padding: 13px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        #submitBtn {
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent-pink));
+            color: var(--white);
+        }
+
+        #submitBtn:hover {
+            opacity: 0.9;
+        }
+
+        .reset-btn {
+            background-color: #1e1b2e;
+            color: var(--white);
+            border: 1px solid var(--border-color);
+        }
+
+        .summary-box {
+            background-color: #262235;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        .summary-box strong {
+            color: var(--white);
+        }
+
+        .history-box {
+            background-color: #262235;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 13px;
+            max-height: 120px;
+            overflow-y: auto;
+            color: var(--text-muted);
+        }
+
+        .message-box {
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            text-align: center;
+            display: none;
+            font-size: 13px;
+        }
+
+        .message-box.error {
+            background-color: rgba(248, 113, 113, 0.15);
+            color: var(--error-color);
+            border: 1px solid rgba(248, 113, 113, 0.3);
+            display: block;
+        }
+
+        .message-box.success {
+            background-color: rgba(52, 211, 153, 0.15);
+            color: var(--success-color);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            display: block;
+        }
+
+        .storage-status {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-align: right;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h2>Aurora Stationery Shop</h2>
+        <div class="welcome-msg">Day 18: Final Dashboard & Testing Suite</div>
+    </header>
+
+    <div class="dashboard-grid">
+        <div class="left-column">
+            <div class="stats-row">
+                <div class="stat-card">
+                    <span class="stat-label">Total Products</span>
+                    <span class="stat-value" id="statTotalProducts">2</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Total Units</span>
+                    <span class="stat-value" id="statTotalUnits">8</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Low-Stock</span>
+                    <span class="stat-value" id="statLowStockCount">0</span>
+                </div>
+            </div>
+
+            <div class="filter-group">
+                <button type="button" class="filter-btn active" id="filterAllBtn" onclick="setFilter('all')">All Products</button>
+                <button type="button" class="filter-btn" id="filterLowBtn" onclick="setFilter('low')">Low Stock (≤ 2)</button>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <div class="product-card" id="card-notebook" onclick="selectProduct('notebook')">
+                    <strong>Notebook</strong>
+                    <div id="card-notebook-info">Stock: 5 | Factor: 6</div>
+                    <div class="stock-status-badge" id="badge-notebook">In stock</div>
+                </div>
+                <div class="product-card" id="card-eraser" onclick="selectProduct('eraser')">
+                    <strong>Eraser</strong>
+                    <div id="card-eraser-info">Stock: 3 | Factor: 2</div>
+                    <div class="stock-status-badge" id="badge-eraser">In stock</div>
+                </div>
+            </div>
+
+            <div class="filter-notice" id="filterNotice" style="display: none;"></div>
+            <div class="selected-indicator" id="selectedProductIndicator">Selected product: Notebook</div>
+        </div>
+
+        <div class="right-column">
+            <div class="controls-box">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="operationSelect">Operation Type:</label>
+                        <select id="operationSelect">
+                            <option value="sell">Sell</option>
+                            <option value="restock">Restock</option>
+                            <option value="return">Return</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantityInput">Quantity (1 - 1000):</label>
+                        <input type="number" id="quantityInput" min="1" max="1000" placeholder="Enter qty">
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button type="button" class="action-btn" id="submitBtn">Submit Action</button>
+                    <button type="button" class="action-btn reset-btn" id="resetBtn">Reset Shop</button>
+                </div>
+            </div>
+
+            <div id="messageBox" class="message-box"></div>
+
+            <div class="summary-box" id="summaryBox">
+                <strong>Shop Summary Report:</strong> Loading state...
+            </div>
+
+            <!-- تم إضافة عرض سجل العمليات (History) هنا ليظهر مباشرة -->
+            <div class="history-box" id="historyBox">
+                <strong>History Log:</strong> None
+            </div>
+
+            <div class="storage-status" id="storageStatus">Storage: Synchronized</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = "dareen-shop-day18-v1";
+    const LOW_STOCK_THRESHOLD = 2;
+    let currentFilter = "all";
+
+    function getFreshState() {
+        return {
+            version: 1,
+            selected: "notebook",
+            products: {
+                notebook: { name: "Notebook", factor: 6, stock: 5, netSold: 0, totalOutput: 0, inventoryTotal: 30 },
+                eraser: { name: "Eraser", factor: 2, stock: 3, netSold: 0, totalOutput: 0, inventoryTotal: 6 }
+            },
+            history: []
+        };
+    }
+
+    let shopState = getFreshState();
+    let isRecoveryNeeded = false;
+
+    function validateState(candidate) {
+        if (!candidate || typeof candidate !== "object") return false;
+        if (!candidate.products || !Array.isArray(candidate.history)) return false;
+        return true;
+    }
+
+    function loadFromStorage() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved !== null) {
+                const parsed = JSON.parse(saved);
+                if (validateState(parsed)) {
+                    shopState = parsed;
+                    isRecoveryNeeded = false;
+                } else {
+                    shopState = getFreshState();
+                }
+            }
+        } catch (e) {
+            shopState = getFreshState();
+        }
+    }
+
+    function saveToStorage() {
+        if (isRecoveryNeeded) return;
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(shopState));
+        } catch (e) {}
+    }
+
+    function resetShop() {
+        if (confirm("Reset shop to fresh state?")) {
+            localStorage.removeItem(STORAGE_KEY);
+            shopState = getFreshState();
+            currentFilter = "all";
+            render();
+            showMessage("Shop has been reset.", "success");
+        }
+    }
+
+    function parseValidQuantity(rawVal) {
+        if (rawVal === "" || rawVal === null) return null;
+        const num = Number(rawVal);
+        if (!Number.isInteger(num) || num < 1 || num > 1000) return null;
+        return num;
+    }
+
+    function selectProduct(key) {
+        if (shopState.products[key]) {
+            shopState.selected = key;
+            render();
+        }
+    }
+
+    function setFilter(type) {
+        currentFilter = type;
+        render();
+    }
+
+    function executeOperation() {
+        const operationType = document.getElementById("operationSelect").value;
+        const qtyInput = document.getElementById("quantityInput");
+        const qty = parseValidQuantity(qtyInput.value);
+
+        if (qty === null) {
+            showMessage("Error: Enter integer between 1 and 1000.", "error");
+            return;
+        }
+
+        const p = shopState.products[shopState.selected];
+        let success = false;
+        let msg = "";
+
+        if (operationType === 'sell') {
+            if (p.stock >= qty) {
+                p.stock -= qty;
+                p.netSold += qty;
+                success = true;
+            } else {
+                msg = "Refused: Insufficient stock!";
+            }
+        } else if (operationType === 'restock') {
+            if (p.stock + qty <= 10000) {
+                p.stock += qty;
+                success = true;
+            } else {
+                msg = "Refused: Exceeds maximum capacity!";
+            }
+        } else if (operationType === 'return') {
+            if (qty > p.netSold) {
+                msg = "Refused: Cannot return more than sold!";
+            } else {
+                p.stock += qty;
+                p.netSold -= qty;
+                success = true;
+            }
+        }
+
+        if (success) {
+            shopState.history.unshift({ product: p.name, action: operationType.toUpperCase(), qty, newStock: p.stock });
+            saveToStorage();
+            render();
+            qtyInput.value = "";
+            showMessage("Success: " + operationType.toUpperCase() + " " + qty + " for " + p.name, "success");
+        } else {
+            showMessage(msg, "error");
+        }
+    }
+
+    function showMessage(text, type) {
+        const box = document.getElementById("messageBox");
+        box.textContent = text;
+        box.className = "message-box " + type;
+    }
+
+    function getStockStatusText(stock) {
+        if (stock === 0) return "Out of stock";
+        if (stock <= LOW_STOCK_THRESHOLD) return "Low stock";
+        return "In stock";
+    }
+
+    function render() {
+        const nb = shopState.products.notebook;
+        const er = shopState.products.eraser;
+
+        const totalProducts = 2;
+        const totalUnits = nb.stock + er.stock;
+        let lowStockCount = (nb.stock <= LOW_STOCK_THRESHOLD ? 1 : 0) + (er.stock <= LOW_STOCK_THRESHOLD ? 1 : 0);
+
+        document.getElementById("statTotalProducts").textContent = totalProducts;
+        document.getElementById("statTotalUnits").textContent = totalUnits;
+        document.getElementById("statLowStockCount").textContent = lowStockCount;
+
+        document.getElementById("card-notebook-info").textContent = "Stock: " + nb.stock + " | Factor: " + nb.factor;
+        document.getElementById("badge-notebook").textContent = getStockStatusText(nb.stock);
+        document.getElementById("card-eraser-info").textContent = "Stock: " + er.stock + " | Factor: " + er.factor;
+        document.getElementById("badge-eraser").textContent = getStockStatusText(er.stock);
+
+        const nbCard = document.getElementById("card-notebook");
+        const erCard = document.getElementById("card-eraser");
+        const filterNotice = document.getElementById("filterNotice");
+
+        if (currentFilter === "low") {
+            document.getElementById("filterAllBtn").classList.remove("active");
+            document.getElementById("filterLowBtn").classList.add("active");
+            nbCard.style.display = nb.stock <= LOW_STOCK_THRESHOLD ? "block" : "none";
+            erCard.style.display = er.stock <= LOW_STOCK_THRESHOLD ? "block" : "none";
+            filterNotice.style.display = lowStockCount === 0 ? "block" : "none";
+            filterNotice.textContent = "No products are low on stock";
+        } else {
+            document.getElementById("filterAllBtn").classList.add("active");
+            document.getElementById("filterLowBtn").classList.remove("active");
+            nbCard.style.display = "block";
+            erCard.style.display = "block";
+            filterNotice.style.display = "none";
+        }
+
+        nbCard.setAttribute("aria-pressed", shopState.selected === 'notebook' ? "true" : "false");
+        erCard.setAttribute("aria-pressed", shopState.selected === 'eraser' ? "true" : "false");
+
+        const selectedProdObj = shopState.products[shopState.selected];
+        const isHidden = (currentFilter === "low" && selectedProdObj.stock > LOW_STOCK_THRESHOLD);
+        document.getElementById("selectedProductIndicator").textContent = 
+            "Selected: " + selectedProdObj.name + (isHidden ? " (Hidden by filter)" : "");
+
+        document.getElementById("summaryBox").innerHTML = 
+            "<strong>Report:</strong> Notebook [Stock: " + nb.stock + ", Sold: " + nb.netSold + "] | Eraser [Stock: " + er.stock + ", Sold: " + er.netSold + "]";
+
+        // تحديث وعرض السجل (History Log) بشكل مرئي في الصفحة
+        const historyBox = document.getElementById("historyBox");
+        if (shopState.history.length === 0) {
+            historyBox.innerHTML = "<strong>History Log:</strong> None";
+        } else {
+            let historyHtml = "<strong>History Log (" + shopState.history.length + "):</strong><ul>";
+            shopState.history.forEach(item => {
+                historyHtml += "<li>" + item.action + " " + item.qty + " " + item.product + " (Stock left: " + item.newStock + ")</li>";
+            });
+            historyHtml += "</ul>";
+            historyBox.innerHTML = historyHtml;
+        }
+    }
+
+    document.getElementById("submitBtn").addEventListener("click", executeOperation);
+    document.getElementById("resetBtn").addEventListener("click", resetShop);
+
+    window.onload = function() {
+        loadFromStorage();
+        render();
+    };
+</script>
+</body>
+</html> 

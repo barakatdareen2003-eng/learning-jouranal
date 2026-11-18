@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Studio - Advanced Inventory Management</title>
+    <style>
+        :root {
+            --bg-main: #0f1015;
+            --bg-card: #181920;
+            --bg-card-hover: #22232e;
+            --accent-primary: #a855f7;
+            --accent-gradient: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border-color: #2d2e3b;
+            --danger: #ef4444;
+            --success: #10b981;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .view-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--bg-card-hover);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .kpi-card h3 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media(min-width: 768px) {
+            .workspace {
+                grid-template-columns: 1.2fr 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .panel h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .controls-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"], select, input[type="number"] {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            padding: 0.6rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            flex: 1;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        .btn {
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: var(--bg-card-hover);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .item-card {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.9rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .item-card:hover, .item-card.selected {
+            border-color: var(--accent-primary);
+            background: var(--bg-card-hover);
+        }
+
+        .item-info h4 {
+            font-size: 1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .item-info span {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge.in-stock { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .badge.low-stock { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+        .badge.out-of-stock { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+
+        .history-log {
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            max-height: 150px;
+            overflow-y: auto;
+            background: var(--bg-main);
+            padding: 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            margin-top: 1rem;
+        }
+
+        .error-msg {
+            color: var(--danger);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .success-msg {
+            color: var(--success);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Stock Studio</h1>
+            <p>Professional Inventory & Restock Planner Workflow</p>
+        </header>
+
+        <div class="view-tabs">
+            <button class="tab-btn active" onclick="switchView('overview')">01 / Overview</button>
+            <button class="tab-btn" onclick="switchView('inventory')">02 / Inventory & Details</button>
+            <button class="tab-btn" onclick="switchView('draft')">03 / Restock Draft</button>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <h3>Items Tracked</h3>
+                <div class="value" id="kpi-total-items">0</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Needs Attention (Low)</h3>
+                <div class="value" id="kpi-low-stock" style="color: var(--warning);">0</div>
+            </div>
+            <div class="kpi-card">
+                <h3>Out of Stock</h3>
+                <div class="value" id="kpi-out-stock" style="color: var(--danger);">0</div>
+            </div>
+        </div>
+
+        <div class="workspace">
+            <div class="panel">
+                <h2>
+                    <span>Inventory Catalog</span>
+                    <button class="btn btn-secondary" style="font-size: 0.75rem; padding: 0.3rem 0.6rem;" onclick="resetShop()">Reset Shop</button>
+                </h2>
+                
+                <div class="controls-row">
+                    <input type="text" id="search-input" placeholder="Search by name or SKU..." oninput="renderApp()">
+                    <select id="status-filter" onchange="renderApp()">
+                        <option value="all">All Status</option>
+                        <option value="low">Low Stock</option>
+                        <option value="out">Out of Stock</option>
+                    </select>
+                </div>
+
+                <div class="item-list" id="item-list-container"></div>
+            </div>
+
+            <div class="panel">
+                <h2 id="right-panel-title">Action & Detail Panel</h2>
+                
+                <div id="item-action-view">
+                    <div id="selected-item-info" style="margin-bottom: 1rem; color: var(--text-muted);">
+                        Select an item from the list to view details and perform operations.
+                    </div>
+
+                    <div id="operations-controls" class="hidden">
+                        <div class="controls-row">
+                            <select id="op-type">
+                                <option value="sell">Sell</option>
+                                <option value="restock">Restock</option>
+                                <option value="return">Return</option>
+                            </select>
+                            <input type="number" id="op-qty" min="1" max="1000" value="1" placeholder="Qty">
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <button class="btn" onclick="executeOperation()">Submit Action</button>
+                            <button class="btn btn-secondary" onclick="addToRestockDraft()">Add to Restock Draft</button>
+                        </div>
+                        <div id="op-feedback"></div>
+                    </div>
+                </div>
+
+                <div id="restock-draft-view" class="hidden">
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Draft only. Saving or generating lists here does NOT increase real inventory or submit live orders.
+                    </p>
+                    <div id="draft-items-container" class="item-list"></div>
+                    <div style="margin-top: 1rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span id="draft-summary-text" style="font-weight: 600;">Total Draft Units: 0</span>
+                        <button class="btn" onclick="saveDraft()">Save Draft Locally</button>
+                    </div>
+                    <div id="draft-feedback"></div>
+                </div>
+
+                <div class="history-log" id="history-log-box">
+                    History Log: None
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let inventory = [
+            { id: "item-1", name: "Notebook", sku: "SKU-NOTE-01", stock: 5, target: 8 },
+            { id: "item-2", name: "Eraser", sku: "SKU-ERAS-02", stock: 3, target: 5 },
+            { id: "item-3", name: "Canvas Tote", sku: "DEMO-01", stock: 4, target: 12 },
+            { id: "item-4", name: "Ceramic Cup", sku: "DEMO-02", stock: 0, target: 8 }
+        ];
+
+        let selectedId = null;
+        let restockDraft = [];
+        let historyLog = [];
+        let currentView = 'overview';
+
+        function loadState() {
+            try {
+                let savedInv = localStorage.getItem('stock_studio_inv');
+                let savedDraft = localStorage.getItem('stock_studio_draft');
+                let savedLog = localStorage.getItem('stock_studio_log');
+                if (savedInv) inventory = JSON.parse(savedInv);
+                if (savedDraft) restockDraft = JSON.parse(savedDraft);
+                if (savedLog) historyLog = JSON.parse(savedLog);
+            } catch (err) {
+                console.error("Storage error", err);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem('stock_studio_inv', JSON.stringify(inventory));
+                localStorage.setItem('stock_studio_draft', JSON.stringify(restockDraft));
+                localStorage.setItem('stock_studio_log', JSON.stringify(historyLog));
+            } catch (err) {
+                console.error("Storage save error", err);
+            }
+        }
+
+        function switchView(viewName) {
+            currentView = viewName;
+            document.querySelectorAll('.tab-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            if (viewName === 'draft') {
+                document.getElementById('item-action-view').classList.add('hidden');
+                document.getElementById('restock-draft-view').classList.remove('hidden');
+                document.getElementById('right-panel-title').innerText = 'Restock Draft Workspace';
+                renderDraft();
+            } else {
+                document.getElementById('item-action-view').classList.remove('hidden');
+                document.getElementById('restock-draft-view').classList.add('hidden');
+                document.getElementById('right-panel-title').innerText = 'Action & Detail Panel';
+            }
+            renderApp();
+        }
+
+        function getStatus(item) {
+            if (item.stock === 0) return { label: 'Out of Stock', class: 'out-of-stock' };
+            if (item.stock < item.target) return { label: 'Low Stock', class: 'low-stock' };
+            return { label: 'In Stock', class: 'in-stock' };
+        }
+
+        function renderApp() {
+            let search = document.getElementById('search-input').value.toLowerCase();
+            let filter = document.getElementById('status-filter').value;
+            let container = document.getElementById('item-list-container');
+            
+            container.innerHTML = '';
+
+            let totalItems = inventory.length;
+            let lowCount = 0;
+            let outCount = 0;
+
+            inventory.forEach(function(item) {
+                if (item.stock === 0) outCount++;
+                else if (item.stock < item.target) lowCount++;
+
+                let statusObj = getStatus(item);
+                if (filter === 'low' && statusObj.class !== 'low-stock') return;
+                if (filter === 'out' && statusObj.class !== 'out-of-stock') return;
+                if (search && !item.name.toLowerCase().includes(search) && !item.sku.toLowerCase().includes(search)) return;
+
+                let card = document.createElement('div');
+                card.className = 'item-card ' + (selectedId === item.id ? 'selected' : '');
+                card.onclick = function() { selectItem(item.id); };
+                card.innerHTML = 
+                    '<div class="item-info">' +
+                        '<h4>' + item.name + '</h4>' +
+                        '<span>' + item.sku + ' | Stock: ' + item.stock + ' / Target: ' + item.target + '</span>' +
+                    '</div>' +
+                    '<span class="badge ' + statusObj.class + '">' + statusObj.label + '</span>';
+                container.appendChild(card);
+            });
+
+            document.getElementById('kpi-total-items').innerText = totalItems;
+            document.getElementById('kpi-low-stock').innerText = lowCount;
+            document.getElementById('kpi-out-stock').innerText = outCount;
+
+            renderHistory();
+        }
+
+        function selectItem(id) {
+            selectedId = id;
+            let item = inventory.find(function(i) { return i.id === id; });
+            let infoDiv = document.getElementById('selected-item-info');
+            let controls = document.getElementById('operations-controls');
+
+            if (item) {
+                controls.classList.remove('hidden');
+                let suggestedRestock = Math.max(0, item.target - item.stock);
+                infoDiv.innerHTML = 
+                    '<strong>Selected: ' + item.name + '</strong><br>' +
+                    'Current Stock: ' + item.stock + ' | Target: ' + item.target + '<br>' +
+                    'Suggested Restock Quantity: <strong>' + suggestedRestock + '</strong>';
+            }
+            renderApp();
+        }
+
+        function executeOperation() {
+            if (!selectedId) return;
+            let item = inventory.find(function(i) { return i.id === selectedId; });
+            let opType = document.getElementById('op-type').value;
+            let qty = parseInt(document.getElementById('op-qty').value);
+            let feedback = document.getElementById('op-feedback');
+
+            if (isNaN(qty) || qty <= 0) {
+                feedback.innerHTML = '<div class="error-msg">Refused: Please enter a valid positive quantity!</div>';
+                return;
+            }
+
+            if (opType === 'sell') {
+                if (item.stock < qty) {
+                    feedback.innerHTML = '<div class="error-msg">Refused: Insufficient stock available!</div>';
+                    return;
+                }
+                item.stock -= qty;
+            } else if (opType === 'restock') {
+                item.stock += qty;
+            } else if (opType === 'return') {
+                item.stock += qty;
+            }
+
+            historyLog.unshift('[' + opType.toUpperCase() + '] ' + qty + ' ' + item.name + ' (Stock left: ' + item.stock + ')');
+            feedback.innerHTML = '<div class="success-msg">Success: ' + opType.toUpperCase() + ' ' + qty + ' for ' + item.name + '</div>';
+            
+            saveState();
+            renderApp();
+            selectItem(selectedId);
+        }
+
+        function addToRestockDraft() {
+            if (!selectedId) return;
+            let item = inventory.find(function(i) { return i.id === selectedId; });
+            let existing = restockDraft.find(function(d) { return d.id === item.id; });
+            let suggested = Math.max(0, item.target - item.stock);
+
+            if (!existing) {
+                restockDraft.push({ id: item.id, name: item.name, qty: suggested > 0 ? suggested : 1 });
+            }
+            saveState();
+            alert('Added ' + item.name + ' to Restock Draft successfully!');
+        }
+
+        function renderDraft() {
+            let container = document.getElementById('draft-items-container');
+            container.innerHTML = '';
+            let totalDraftUnits = 0;
+
+            if (restockDraft.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Draft is empty.</p>';
+            }
+
+            restockDraft.forEach(function(draftItem, index) {
+                totalDraftUnits += draftItem.qty;
+                let div = document.createElement('div');
+                div.className = 'item-card';
+                div.innerHTML = 
+                    '<div class="item-info">' +
+                        '<h4>' + draftItem.name + '</h4>' +
+                        '<span>Draft Qty: <input type="number" value="' + draftItem.qty + '" min="1" style="width: 70px; padding: 2px;" onchange="updateDraftQty(\'' + draftItem.id + '\', this.value)"></span>' +
+                    '</div>' +
+                    '<button class="btn btn-secondary" style="background: var(--danger); border: none; padding: 0.3rem 0.6rem;" onclick="removeDraftItem(' + index + ')">Remove</button>';
+                container.appendChild(div);
+            });
+
+            document.getElementById('draft-summary-text').innerText = 'Total Draft Units: ' + totalDraftUnits;
+        }
+
+        function updateDraftQty(id, val) {
+            let qty = parseInt(val);
+            let item = restockDraft.find(function(d) { return d.id === id; });
+            if (item && !isNaN(qty) && qty > 0) {
+                item.qty = qty;
+                saveState();
+                renderDraft();
+            }
+        }
+
+        function removeDraftItem(index) {
+            restockDraft.splice(index, 1);
+            saveState();
+            renderDraft();
+        }
+
+        function saveDraft() {
+            saveState();
+            document.getElementById('draft-feedback').innerHTML = '<div class="success-msg">Draft saved locally successfully!</div>';
+        }
+
+        function renderHistory() {
+            let box = document.getElementById('history-log-box');
+            if (historyLog.length === 0) {
+                box.innerText = 'History Log: None';
+            } else {
+                box.innerHTML = 'History Log:<br>' + historyLog.join('<br>');
+            }
+        }
+
+        function resetShop() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        loadState();
+        renderApp();
+    </script>
+</body>
+</html>
